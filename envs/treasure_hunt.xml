@@ -18,228 +18,8 @@
     <ServerHandlers>
       <!-- Use existing world -->
       <!-- replace path with your own save -->
-      <FileWorldGenerator src="/home/varun/Downloads/Malmo-0.37.0-Linux-Ubuntu-18.04-64bit_withBoost_Python3.6/Minecraft/run/saves/Ice Boat Course"/>
+      <FileWorldGenerator src="C:\Users\vupha\Malmo\Minecraft\run\saves\Ice Boat Course"/>
       
-      <!-- Item spawning template - replace coordinates with actual values -->
-      <DrawingDecorator>
-        <!-- Diamond spawn points -->
-        <DrawItem type="diamond" x="581" y="4" z="-465"/>
-        <DrawItem type="diamond" x="581" y="4" z="-466"/>
-        <DrawItem type="diamond" x="581" y="4" z="-467"/>
-        <DrawItem type="diamond" x="581" y="4" z="-468"/>
-        <DrawItem type="diamond" x="581" y="4" z="-469"/>
-        <DrawItem type="diamond" x="581" y="4" z="-470"/>
-        <DrawItem type="diamond" x="581" y="4" z="-471"/>
-        <DrawItem type="diamond" x="581" y="4" z="-472"/>
-        <!-- 585 4 -462 --> 
-        <DrawItem type="diamond" x="588" y="4" z="-462"/>
-        <DrawItem type="diamond" x="589" y="4" z="-463"/>
-        <DrawItem type="diamond" x="590" y="4" z="-464"/>
-        <DrawItem type="diamond" x="591" y="4" z="-465"/>
-        <DrawItem type="diamond" x="592" y="4" z="-466"/>
-        <DrawItem type="diamond" x="593" y="4" z="-467"/>
-        <DrawItem type="diamond" x="594" y="4" z="-468"/>
-        <!-- 585 4 -450 --> 
-        <DrawItem type="diamond" x="588" y="4" z="-450"/>
-        <DrawItem type="diamond" x="589" y="4" z="-450"/>
-        <DrawItem type="diamond" x="590" y="4" z="-450"/>
-        <DrawItem type="diamond" x="591" y="4" z="-450"/>
-        <DrawItem type="diamond" x="592" y="4" z="-450"/>
-        <DrawItem type="diamond" x="593" y="4" z="-450"/>
-        <DrawItem type="diamond" x="594" y="4" z="-450"/>
-        <DrawItem type="diamond" x="595" y="4" z="-450"/>
-        <!-- 585 4 -429 --> 
-        <DrawItem type="diamond" x="588" y="4" z="-429"/>
-        <DrawItem type="diamond" x="589" y="4" z="-429"/>
-        <DrawItem type="diamond" x="590" y="4" z="-429"/>
-        <DrawItem type="diamond" x="591" y="4" z="-429"/>
-        <DrawItem type="diamond" x="592" y="4" z="-429"/>
-        <DrawItem type="diamond" x="593" y="4" z="-429"/>
-        <DrawItem type="diamond" x="594" y="4" z="-429"/>
-        <DrawItem type="diamond" x="595" y="4" z="-429"/>
-        <!-- 585 4 -404 --> 
-        <DrawItem type="diamond" x="588" y="4" z="-404"/>
-        <DrawItem type="diamond" x="589" y="4" z="-404"/>
-        <DrawItem type="diamond" x="590" y="4" z="-404"/>
-        <DrawItem type="diamond" x="591" y="4" z="-404"/>
-        <DrawItem type="diamond" x="592" y="4" z="-404"/>
-        <DrawItem type="diamond" x="593" y="4" z="-404"/>
-        <DrawItem type="diamond" x="594" y="4" z="-404"/>
-        <DrawItem type="diamond" x="595" y="4" z="-404"/>
-        <!-- 585 4 -378 --> 
-        <DrawItem type="diamond" x="588" y="4" z="-378"/>
-        <DrawItem type="diamond" x="589" y="4" z="-378"/>
-        <DrawItem type="diamond" x="590" y="4" z="-378"/>
-        <DrawItem type="diamond" x="591" y="4" z="-378"/>
-        <DrawItem type="diamond" x="592" y="4" z="-378"/>
-        <DrawItem type="diamond" x="593" y="4" z="-378"/>
-        <DrawItem type="diamond" x="594" y="4" z="-378"/>
-        <DrawItem type="diamond" x="595" y="4" z="-378"/>
-        <!-- 585 4 -364 --> 
-        <DrawItem type="diamond" x="585" y="4" z="-364"/>
-        <DrawItem type="diamond" x="586" y="4" z="-364"/>
-        <DrawItem type="diamond" x="587" y="4" z="-364"/>
-        <DrawItem type="diamond" x="588" y="4" z="-364"/>
-        <DrawItem type="diamond" x="589" y="4" z="-364"/>
-        <DrawItem type="diamond" x="590" y="4" z="-364"/>
-        <DrawItem type="diamond" x="591" y="4" z="-364"/>
-        <DrawItem type="diamond" x="592" y="4" z="-364"/>
-
-        <!-- 580 4 -360 --> 
-        <DrawItem type="diamond" x="582" y="4" z="-360"/>
-        <DrawItem type="diamond" x="583" y="4" z="-360"/>
-        <DrawItem type="diamond" x="584" y="4" z="-360"/>
-        <DrawItem type="diamond" x="585" y="4" z="-360"/>
-        <DrawItem type="diamond" x="586" y="4" z="-360"/>
-        <DrawItem type="diamond" x="587" y="4" z="-360"/>
-        <!-- 580 4 -347 --> 
-        <DrawItem type="diamond" x="580" y="4" z="-347"/>
-        <DrawItem type="diamond" x="581" y="4" z="-347"/>
-        <DrawItem type="diamond" x="582" y="4" z="-347"/>
-        <DrawItem type="diamond" x="583" y="4" z="-347"/>
-        <DrawItem type="diamond" x="584" y="4" z="-347"/>
-        <DrawItem type="diamond" x="585" y="4" z="-347"/>
-        <DrawItem type="diamond" x="586" y="4" z="-347"/>
-        <DrawItem type="diamond" x="587" y="4" z="-347"/>
-        <!-- 580 4 -324 --> 
-        <DrawItem type="diamond" x="580" y="4" z="-324"/>
-        <DrawItem type="diamond" x="581" y="4" z="-324"/>
-        <DrawItem type="diamond" x="582" y="4" z="-324"/>
-        <DrawItem type="diamond" x="583" y="4" z="-324"/>
-        <DrawItem type="diamond" x="584" y="4" z="-324"/>
-        <DrawItem type="diamond" x="585" y="4" z="-324"/>
-        <DrawItem type="diamond" x="586" y="4" z="-324"/>
-        <DrawItem type="diamond" x="587" y="4" z="-324"/>
-        <!-- 579 4 -319 -->   
-        <DrawItem type="diamond" x="579" y="4" z="-319"/>
-        <DrawItem type="diamond" x="580" y="4" z="-318"/>
-        <DrawItem type="diamond" x="581" y="4" z="-317"/>
-        <DrawItem type="diamond" x="582" y="4" z="-316"/>
-        <DrawItem type="diamond" x="583" y="4" z="-315"/>
-        <DrawItem type="diamond" x="584" y="4" z="-314"/>
-        <DrawItem type="diamond" x="585" y="4" z="-313"/>
-        <!-- 577 4 -318 --> 
-        <DrawItem type="diamond" x="577" y="4" z="-318"/>
-        <DrawItem type="diamond" x="577" y="4" z="-317"/>
-        <DrawItem type="diamond" x="577" y="4" z="-316"/>
-        <DrawItem type="diamond" x="577" y="4" z="-315"/>
-        <DrawItem type="diamond" x="577" y="4" z="-314"/>
-        <DrawItem type="diamond" x="577" y="4" z="-313"/>
-        <DrawItem type="diamond" x="577" y="4" z="-312"/>
-        <DrawItem type="diamond" x="577" y="4" z="-311"/>
-        <DrawItem type="diamond" x="577" y="4" z="-310"/>
-        <!-- 575 4 -313 --> 
-        <DrawItem type="diamond" x="575" y="4" z="-320"/>
-        <DrawItem type="diamond" x="574" y="4" z="-319"/>
-        <DrawItem type="diamond" x="573" y="4" z="-318"/>
-        <DrawItem type="diamond" x="572" y="4" z="-317"/>
-        <DrawItem type="diamond" x="571" y="4" z="-316"/>
-        <DrawItem type="diamond" x="570" y="4" z="-315"/>
-        <DrawItem type="diamond" x="569" y="4" z="-314"/>
-        <DrawItem type="diamond" x="568" y="4" z="-313"/>
-        <!-- 575 4 -326 --> 
-        <DrawItem type="diamond" x="575" y="4" z="-326"/>
-        <DrawItem type="diamond" x="574" y="4" z="-326"/>
-        <DrawItem type="diamond" x="573" y="4" z="-326"/>
-        <DrawItem type="diamond" x="572" y="4" z="-326"/>
-        <DrawItem type="diamond" x="571" y="4" z="-326"/>
-        <DrawItem type="diamond" x="570" y="4" z="-326"/>
-        <DrawItem type="diamond" x="569" y="4" z="-326"/>
-        <DrawItem type="diamond" x="568" y="4" z="-326"/>
-        <DrawItem type="diamond" x="567" y="4" z="-326"/>
-        <DrawItem type="diamond" x="566" y="4" z="-326"/>
-
-        <DrawItem type="diamond" x="575" y="4" z="-346"/>
-        <DrawItem type="diamond" x="574" y="4" z="-346"/>
-        <DrawItem type="diamond" x="573" y="4" z="-346"/>
-        <DrawItem type="diamond" x="572" y="4" z="-346"/>
-        <DrawItem type="diamond" x="571" y="4" z="-346"/>
-        <DrawItem type="diamond" x="570" y="4" z="-346"/>
-        <DrawItem type="diamond" x="569" y="4" z="-346"/>
-        <DrawItem type="diamond" x="568" y="4" z="-346"/>
-        <DrawItem type="diamond" x="567" y="4" z="-346"/>
-        <DrawItem type="diamond" x="566" y="4" z="-346"/>
-
-        <DrawItem type="diamond" x="575" y="4" z="-361"/>
-        <DrawItem type="diamond" x="574" y="4" z="-361"/>
-        <DrawItem type="diamond" x="573" y="4" z="-361"/>
-        <DrawItem type="diamond" x="572" y="4" z="-361"/>
-        <DrawItem type="diamond" x="571" y="4" z="-361"/>
-        <DrawItem type="diamond" x="570" y="4" z="-361"/>
-        <DrawItem type="diamond" x="569" y="4" z="-361"/>
-        <DrawItem type="diamond" x="568" y="4" z="-361"/>
-        <DrawItem type="diamond" x="567" y="4" z="-361"/>
-        <DrawItem type="diamond" x="566" y="4" z="-361"/>
-        <!-- 574.5 4 -383.5 --> 
-        <DrawItem type="diamond" x="575" y="4" z="-383"/>
-        <DrawItem type="diamond" x="574" y="4" z="-383"/>
-        <DrawItem type="diamond" x="573" y="4" z="-383"/>
-        <DrawItem type="diamond" x="572" y="4" z="-383"/>
-        <DrawItem type="diamond" x="571" y="4" z="-383"/>
-        <DrawItem type="diamond" x="570" y="4" z="-383"/>
-        <DrawItem type="diamond" x="569" y="4" z="-383"/>
-        <DrawItem type="diamond" x="568" y="4" z="-383"/>
-        <DrawItem type="diamond" x="567" y="4" z="-383"/>
-        <DrawItem type="diamond" x="566" y="4" z="-383"/>
-        <!-- 574.5 4 -399.5 -->
-        <DrawItem type="diamond" x="575" y="4" z="-399"/>
-        <DrawItem type="diamond" x="574" y="4" z="-399"/>
-        <DrawItem type="diamond" x="573" y="4" z="-399"/>
-        <DrawItem type="diamond" x="572" y="4" z="-399"/>
-        <DrawItem type="diamond" x="571" y="4" z="-399"/>
-        <DrawItem type="diamond" x="570" y="4" z="-399"/>
-        <DrawItem type="diamond" x="569" y="4" z="-399"/>
-        <DrawItem type="diamond" x="568" y="4" z="-399"/>
-        <DrawItem type="diamond" x="567" y="4" z="-399"/>
-        <DrawItem type="diamond" x="566" y="4" z="-399"/>
-
-        <DrawItem type="diamond" x="575" y="4" z="-415"/>
-        <DrawItem type="diamond" x="574" y="4" z="-415"/>
-        <DrawItem type="diamond" x="573" y="4" z="-415"/>
-        <DrawItem type="diamond" x="572" y="4" z="-415"/>
-        <DrawItem type="diamond" x="571" y="4" z="-415"/>
-        <DrawItem type="diamond" x="570" y="4" z="-415"/>
-        <DrawItem type="diamond" x="569" y="4" z="-415"/>
-        <DrawItem type="diamond" x="568" y="4" z="-415"/>
-        <DrawItem type="diamond" x="567" y="4" z="-415"/>
-        <DrawItem type="diamond" x="566" y="4" z="-415"/>
-
-        <DrawItem type="diamond" x="575" y="4" z="-440"/>
-        <DrawItem type="diamond" x="574" y="4" z="-440"/>
-        <DrawItem type="diamond" x="573" y="4" z="-440"/>
-        <DrawItem type="diamond" x="572" y="4" z="-440"/>
-        <DrawItem type="diamond" x="571" y="4" z="-440"/>
-        <DrawItem type="diamond" x="570" y="4" z="-440"/>
-        <DrawItem type="diamond" x="569" y="4" z="-440"/>
-        <DrawItem type="diamond" x="568" y="4" z="-440"/>
-        <DrawItem type="diamond" x="567" y="4" z="-440"/>
-        <DrawItem type="diamond" x="566" y="4" z="-440"/>
-
-        <DrawItem type="diamond" x="575" y="4" z="-462"/>
-        <DrawItem type="diamond" x="574" y="4" z="-462"/>
-        <DrawItem type="diamond" x="573" y="4" z="-462"/>
-        <DrawItem type="diamond" x="572" y="4" z="-462"/>
-        <DrawItem type="diamond" x="571" y="4" z="-462"/>
-        <DrawItem type="diamond" x="570" y="4" z="-462"/>
-        <DrawItem type="diamond" x="569" y="4" z="-462"/>
-        <DrawItem type="diamond" x="568" y="4" z="-462"/>
-        <DrawItem type="diamond" x="567" y="4" z="-462"/>
-        <DrawItem type="diamond" x="566" y="4" z="-462"/>
-
-        <DrawItem type="diamond" x="578" y="4" z="-464"/>
-        <DrawItem type="diamond" x="577" y="4" z="-465"/>
-        <DrawItem type="diamond" x="576" y="4" z="-466"/>
-        <DrawItem type="diamond" x="575" y="4" z="-467"/>
-        <DrawItem type="diamond" x="574" y="4" z="-468"/>
-        <DrawItem type="diamond" x="573" y="4" z="-469"/>
-        <DrawItem type="diamond" x="572" y="4" z="-470"/>
-        <DrawItem type="diamond" x="571" y="4" z="-471"/>
-        <DrawItem type="diamond" x="570" y="4" z="-472"/>
-        
-        
-        <!-- Boat spawn point - replace coordinates -->
-        <DrawEntity type="Boat" x="570" y="4" z="-395"/>
-      </DrawingDecorator>
       
       <ServerQuitFromTimeUp description="server_out_of_time" timeLimitMs="1000000"/>
       <ServerQuitWhenAnyAgentFinishes/>
@@ -254,48 +34,30 @@
     </AgentStart>
     <AgentHandlers>
       <ContinuousMovementCommands turnSpeedDegs="180"/>
-      <!-- <ObservationFromFullStats/>
+      <ObservationFromFullStats/>
       <ObservationFromGrid>
         <Grid name="floor3x3">
           <min x="-1" y="-1" z="-1"/>
           <max x="1" y="-1" z="1"/>
         </Grid>
       </ObservationFromGrid>
-      <ObservationFromRay/> -->
+      <ObservationFromRay/>
       <VideoProducer want_depth="false">
         <Width>640</Width>
         <Height>480</Height>
       </VideoProducer>
       
-      <!-- End episode when agent touches lava -->
-      <AgentQuitFromTouchingBlockType>
-        <Block type="lava"/>
-      </AgentQuitFromTouchingBlockType>
-
-      <!-- Reward handlers -->
-      <RewardForCollectingItem>
-        <Item reward="100" type="diamond"/>
-      </RewardForCollectingItem>
-      
-      <!-- <RewardForDeath>
-        <Reward description="death_without_emerald" reward="-200">
-          <Condition>
-            <InventoryItem type="emerald" quantity="0"/>
-          </Condition>
-        </Reward>
-        <Reward description="death_with_emerald" reward="0">
-          <Condition>
-            <InventoryItem type="emerald" quantity="1"/>
-          </Condition>
-        </Reward>
-      </RewardForDeath> -->
-
-      <!-- Negative reward for touching lava (aka death) -->
+      <!-- Checkpoint rewards for touching diamond blocks -->
       <RewardForTouchingBlockType>
+        <Block reward="50" type="diamond_block" behaviour="oncePerBlock"/>
         <Block reward="-100" type="lava" behaviour="onceOnly"/>
+        <Block reward="500" type="emerald_block" behaviour="onceOnly"/>
       </RewardForTouchingBlockType>
       
-      <RewardForSendingCommand reward="-1"/>
+      <!-- End episode when agent touches emerald blocks (finish line) -->
+      <AgentQuitFromTouchingBlockType>
+        <Block type="emerald_block"/>
+      </AgentQuitFromTouchingBlockType>
 
     </AgentHandlers>
   </AgentSection>
