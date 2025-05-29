@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import sys
 import torch
+import gc
 
 # Initialize CUDA if available
 if torch.cuda.is_available():
@@ -21,9 +22,10 @@ else:
 
 # Constants
 XML_FILE = "./envs/treasure_hunt.xml"
-EPISODES = 500
-MAX_STEPS_PER_EPISODE = 100  # Reduced for faster testing
-INPUT_SHAPE = (480, 640, 3)  # Height, Width, Channels from treasure_hunt.xml
+EPISODES = 5000
+MAX_STEPS_PER_EPISODE = 5000
+# Reduce input size significantly to avoid memory issues
+INPUT_SHAPE = (120, 160, 3)  # Reduced from (480, 640, 3) to save memory
 SAVE_INTERVAL = 10
 TARGET_UPDATE = 10
 
@@ -43,9 +45,8 @@ ACTION_COMMANDS = {
 
 # Reward constants
 REWARDS = {
-    "death": -50,               # Death penalty
-    "time_penalty": -0.001,     # Very small time penalty to encourage efficiency
-    "movement_bonus": 0.01,     # Small bonus for forward movement
+    "time_penalty": -1,     # Very small time penalty to encourage efficiency
+    "movement_bonus": 1,     # Small bonus for forward movement
 }
 
 def create_mission_spec():
@@ -58,8 +59,32 @@ def process_frame(frame):
     pixels = np.array(frame.pixels, dtype=np.uint8)
     frame_shape = (frame.height, frame.width, frame.channels)
     image = pixels.reshape(frame_shape)
+    
+    # Resize image to reduce memory usage - use simple downsampling
+    # From original size to target INPUT_SHAPE
+    target_height, target_width = INPUT_SHAPE[0], INPUT_SHAPE[1]
+    
+    # Simple downsampling by taking every nth pixel
+    height_step = max(1, frame.height // target_height)
+    width_step = max(1, frame.width // target_width)
+    
+    # Downsample the image
+    resized = image[::height_step, ::width_step, :]
+    
+    # Ensure we get exactly the target size by cropping if necessary
+    resized = resized[:target_height, :target_width, :]
+    
+    # If the downsampled image is smaller than target, pad it
+    if resized.shape[0] < target_height or resized.shape[1] < target_width:
+        padded = np.zeros((target_height, target_width, 3), dtype=np.uint8)
+        padded[:resized.shape[0], :resized.shape[1], :] = resized
+        resized = padded
+    
+    # Normalize pixel values to [0, 1]
+    resized = resized.astype(np.float32) / 255.0
+    
     # Transpose from (H, W, C) to (C, H, W) for PyTorch
-    image = np.transpose(image, (2, 0, 1))
+    image = np.transpose(resized, (2, 0, 1))
     return image
 
 def process_reward(world_state, step, prev_z_pos):
@@ -73,19 +98,10 @@ def process_reward(world_state, step, prev_z_pos):
         reward += malmo_reward
         print(f"Malmo reward received: {malmo_reward}")
         
-        # Check if this is a finish line reward (emerald block)
-        if malmo_reward >= 500:
-            episode_end = True
-            print(f"Finish line reached! Episode ending with reward: {malmo_reward}")
     
     if len(world_state.observations):
         obs = json.loads(world_state.observations[-1].text)
         
-        # Check for death
-        if "Life" in obs and obs["Life"] <= 0:
-            reward += REWARDS["death"]
-            episode_end = True
-            print("Agent died! Episode ending.")
         
         # Debug position every 20 steps
         if "XPos" in obs and "ZPos" in obs and step % 20 == 0:
@@ -123,7 +139,7 @@ def get_action_reward(action):
     if action_name == "no_turn":  # Going straight - encourage this
         return REWARDS["movement_bonus"]
     elif action_name in ["turn_right", "turn_left"]:  # Turning - small penalty to discourage unnecessary turns
-        return -0.005
+        return -5
     else:
         return 0.0
 
@@ -137,8 +153,8 @@ def main():
         epsilon=0.7,           # Start with lower epsilon (less random)
         epsilon_decay=0.995,   # Slower decay
         epsilon_min=0.1,       # Higher minimum epsilon to maintain some exploration
-        batch_size=32,         # Smaller batch size for more frequent updates
-        mem_size=5000
+        batch_size=16,         # Reduced from 32 to 16 to save memory
+        mem_size=2000          # Reduced from 5000 to 2000 to save memory
     )
     
     print("Initializing Malmo...")
@@ -222,6 +238,12 @@ def main():
                 frame = world_state.video_frames[0]
                 state = process_frame(frame)
                 
+                # Debug: Print frame info on first step of first episode
+                if episode == 0 and step == 0:
+                    print(f"Original frame size: {frame.height}x{frame.width}")
+                    print(f"Processed state shape: {state.shape}")
+                    print(f"Memory usage per frame: ~{state.nbytes} bytes")
+                
                 action = agent.select_action(state)
                 action_name = ACTIONS[action]
                 command, value = ACTION_COMMANDS[action_name]
@@ -256,7 +278,9 @@ def main():
                     done = not world_state.is_mission_running or episode_end
                     agent.memory.push(state, action, reward, next_state, done)
                     
-                    loss = agent.train()
+                    # Train less frequently to reduce memory pressure
+                    if step % 2 == 0:  # Train every 2 steps instead of every step
+                        loss = agent.train()
                     
                     total_reward += reward
                     step += 1
@@ -274,11 +298,6 @@ def main():
                 print(f"Warning: Missing video frame or observations at step {step}")
                 break
         
-        # Check why episode ended
-        if step == 0:
-            print("Warning: Episode ended immediately - check mission setup")
-        elif step < 5:
-            print(f"Warning: Very short episode ({step} steps) - mission may be ending too quickly")
             
         agent.metrics["rewards"].append(total_reward)
         print(f"\nEpisode {episode + 1} finished with total reward: {total_reward:.2f} after {step} steps")
@@ -296,6 +315,11 @@ def main():
         
         print("Waiting for mission to fully end...")
         time.sleep(1)  # Increased wait time for world reset
+        
+        # Clear memory and force garbage collection
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
         
         if episode % TARGET_UPDATE == 0:
             agent.update_target_network()

@@ -53,6 +53,10 @@ class Agent:
         if len(self.memory) < self.batch_size:
             return
         
+        # Clear PyTorch cache to free up memory
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        
         # Sample from replay buffer
         states, actions, rewards, next_states, dones = self.memory.sample(self.batch_size)
         
@@ -81,10 +85,14 @@ class Agent:
         self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
         
         # Update metrics
-        self.metrics["losses"].append(loss.item())
+        loss_value = loss.item()
+        self.metrics["losses"].append(loss_value)
         self.metrics["epsilons"].append(self.epsilon)
         
-        return loss.item()
+        # Clean up tensors to free memory
+        del states, actions, rewards, next_states, dones, current_q_values, next_q_values, target_q_values, loss
+        
+        return loss_value
     
     def update_target_network(self):
         self.target_net.load_state_dict(self.policy_net.state_dict())

@@ -21,7 +21,7 @@
       <FileWorldGenerator src="C:\Users\vupha\Malmo\Minecraft\run\saves\Ice Boat Course"/>
       
       
-      <ServerQuitFromTimeUp description="server_out_of_time" timeLimitMs="1000000"/>
+      <ServerQuitFromTimeUp description="server_out_of_time" timeLimitMs="400000"/>
       <ServerQuitWhenAnyAgentFinishes/>
     </ServerHandlers>
   </ServerSection>
@@ -30,7 +30,7 @@
     <Name>TreasureHunter</Name>
     <AgentStart>
       <!-- Place agent near the boat -->
-      <Placement x="570" y="4" z="-393" pitch="28" yaw="179"/>
+      <Placement x="570" y="4" z="-393" yaw="179"/>
     </AgentStart>
     <AgentHandlers>
       <ContinuousMovementCommands turnSpeedDegs="180"/>
@@ -50,8 +50,8 @@
       <!-- Checkpoint rewards for touching diamond blocks -->
       <RewardForTouchingBlockType>
         <Block reward="50" type="diamond_block" behaviour="oncePerBlock"/>
-        <Block reward="-100" type="lava" behaviour="onceOnly"/>
-        <Block reward="500" type="emerald_block" behaviour="onceOnly"/>
+        <Block reward="-1000" type="lava" behaviour="onceOnly"/>
+        <Block reward="1000" type="emerald_block" behaviour="onceOnly"/>
       </RewardForTouchingBlockType>
       
       <!-- End episode when agent touches emerald blocks (finish line) -->
