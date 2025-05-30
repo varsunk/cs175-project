@@ -51,7 +51,7 @@
       <RewardForTouchingBlockType>
         <Block reward="50" type="diamond_block" behaviour="oncePerBlock"/>
         <Block reward="-1000" type="lava" behaviour="onceOnly"/>
-        <Block reward="1000" type="emerald_block" behaviour="onceOnly"/>
+        <Block reward="10000" type="emerald_block" behaviour="onceOnly"/>
       </RewardForTouchingBlockType>
       
       <!-- End episode when agent touches emerald blocks (finish line) -->
