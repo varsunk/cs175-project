@@ -154,7 +154,7 @@ def get_action_reward(action):
     else:
         return 0.0
 
-def save_checkpoint(agent, episode, reward, best_reward, checkpoint_type="latest"):
+def save_checkpoint(agent, episode, reward, best_reward, best_completion_time, checkpoint_type="latest"):
     """Save checkpoint with proper naming"""
     try:
         if checkpoint_type == "latest":
@@ -169,7 +169,8 @@ def save_checkpoint(agent, episode, reward, best_reward, checkpoint_type="latest
                 'optimizer_state_dict': agent.optimizer.state_dict(),
                 'epsilon': agent.epsilon,
                 'reward': reward,
-                'best_reward': best_reward
+                'best_reward': best_reward,
+                'best_completion_time': best_completion_time
             }, model_path)
             
             # Save metrics
@@ -190,7 +191,8 @@ def save_checkpoint(agent, episode, reward, best_reward, checkpoint_type="latest
                 'optimizer_state_dict': agent.optimizer.state_dict(),
                 'epsilon': agent.epsilon,
                 'reward': reward,
-                'best_reward': best_reward
+                'best_reward': best_reward,
+                'best_completion_time': best_completion_time
             }, model_path)
             
             # Save metrics
@@ -203,7 +205,7 @@ def save_checkpoint(agent, episode, reward, best_reward, checkpoint_type="latest
         print(f"Error saving {checkpoint_type} checkpoint: {e}")
 
 def load_checkpoint(agent, checkpoint_type="latest"):
-    """Load checkpoint and return starting episode number and best reward"""
+    """Load checkpoint and return starting episode number, best reward, and best completion time"""
     try:
         if checkpoint_type == "latest":
             model_path = os.path.join(agent.model_dir, "latest_checkpoint.pth")
@@ -218,7 +220,7 @@ def load_checkpoint(agent, checkpoint_type="latest"):
         
         if not os.path.exists(model_path):
             print(f"No checkpoint found at {model_path}")
-            return 0, float('-inf'), []
+            return 0, float('-inf'), [], float('inf')
         
         print(f"Loading checkpoint from {model_path}...")
         
@@ -234,6 +236,9 @@ def load_checkpoint(agent, checkpoint_type="latest"):
         starting_episode = checkpoint['episode']
         best_reward = checkpoint['best_reward']
         current_reward = checkpoint['reward']
+        
+        # Load best completion time (with backward compatibility)
+        loaded_best_completion_time = checkpoint.get('best_completion_time', float('inf'))
         
         # Load metrics if available
         top_times = []
@@ -256,13 +261,19 @@ def load_checkpoint(agent, checkpoint_type="latest"):
         if agent.metrics.get('completion_times'):
             total_completions = len(agent.metrics['completion_times'])
             print(f"🏁 Total completions so far: {total_completions}")
+            # Update best completion time from existing data if not in checkpoint
+            if agent.metrics['completion_times'] and loaded_best_completion_time == float('inf'):
+                loaded_best_completion_time = min(record['time'] for record in agent.metrics['completion_times'])
+                print(f"🏁 Calculated best completion time from metrics: {loaded_best_completion_time:.2f} seconds")
+            elif loaded_best_completion_time != float('inf'):
+                print(f"🏁 Loaded best completion time: {loaded_best_completion_time:.2f} seconds")
         
-        return starting_episode, best_reward, top_times
+        return starting_episode, best_reward, top_times, loaded_best_completion_time
         
     except Exception as e:
         print(f"❌ Error loading checkpoint: {e}")
         print("Starting training from scratch...")
-        return 0, float('-inf'), []
+        return 0, float('-inf'), [], float('inf')
 
 def update_top_times(top_times, episode, completion_time, reward):
     """Update the top 5 fastest completion times"""
@@ -397,16 +408,17 @@ def main():
     best_reward = float('-inf')
     top_completion_times = []
     total_completions = 0
+    best_completion_time = float('inf')  # Track the best completion time for bonus rewards
     
     # Handle checkpoint loading
     if not args.no_checkpoint:
         if args.load_checkpoint:
             # Load specific checkpoint
-            starting_episode, best_reward, top_completion_times = load_checkpoint(agent, args.load_checkpoint)
+            starting_episode, best_reward, top_completion_times, best_completion_time = load_checkpoint(agent, args.load_checkpoint)
         else:
             # Try to load latest checkpoint automatically
             print("Checking for existing checkpoints...")
-            starting_episode, best_reward, top_completion_times = load_checkpoint(agent, "latest")
+            starting_episode, best_reward, top_completion_times, best_completion_time = load_checkpoint(agent, "latest")
         
         # Update total completions from loaded metrics
         if agent.metrics.get('completion_times'):
@@ -608,6 +620,27 @@ def main():
         # If agent reached finish line, record the time
         if reached_finish_line:
             total_completions += 1
+            
+            # Calculate time improvement bonus before updating records: 100 points per 0.01 seconds
+            time_improvement_bonus = 0
+            if episode_completion_time < best_completion_time and best_completion_time != float('inf'):
+                time_improvement_seconds = best_completion_time - episode_completion_time
+                time_improvement_bonus = (time_improvement_seconds / 0.01) * 100
+                print(f"🚀 NEW BEST TIME! Improved by {time_improvement_seconds:.3f} seconds")
+                print(f"💰 Time improvement bonus: {time_improvement_bonus:.0f} points")
+                
+                # Add the bonus to total reward
+                total_reward += time_improvement_bonus
+                
+                # Update the recorded reward in agent metrics to include the bonus
+                agent.metrics["rewards"][-1] = total_reward
+            elif best_completion_time == float('inf'):
+                print(f"🎉 FIRST COMPLETION! No time bonus for inaugural run.")
+            
+            # Update the best completion time regardless of whether it's first or improved
+            if episode_completion_time < best_completion_time:
+                best_completion_time = episode_completion_time
+            
             top_times = update_top_times(top_completion_times, episode + 1, episode_completion_time, total_reward)
             
             # Add completion times to agent metrics
@@ -661,12 +694,12 @@ def main():
             agent.update_target_network()
         
         # Checkpoint saving logic
-        save_checkpoint(agent, episode + 1, total_reward, best_reward, "latest")
+        save_checkpoint(agent, episode + 1, total_reward, best_reward, best_completion_time, "latest")
         
         # 2. Save best checkpoint when we get a new best reward
         if total_reward > best_reward:
             best_reward = total_reward
-            save_checkpoint(agent, episode + 1, total_reward, best_reward, "best")
+            save_checkpoint(agent, episode + 1, total_reward, best_reward, best_completion_time, "best")
 
     # Save final model after all episodes complete
     print("Training completed! Saving final model...")
@@ -676,12 +709,12 @@ def main():
         print(f"Final model saved after {EPISODES} episodes")
         
         # Also save as latest checkpoint
-        save_checkpoint(agent, EPISODES, agent.metrics["rewards"][-1] if agent.metrics["rewards"] else 0, best_reward, "latest")
+        save_checkpoint(agent, EPISODES, agent.metrics["rewards"][-1] if agent.metrics["rewards"] else 0, best_reward, best_completion_time, "latest")
         
         # If the final episode was the best, save it as best too
         final_reward = agent.metrics["rewards"][-1] if agent.metrics["rewards"] else 0
         if final_reward >= best_reward:
-            save_checkpoint(agent, EPISODES, final_reward, best_reward, "best")
+            save_checkpoint(agent, EPISODES, final_reward, best_reward, best_completion_time, "best")
             
         print(f"Best reward achieved: {best_reward:.2f}")
         
