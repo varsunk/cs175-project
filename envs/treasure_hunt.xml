@@ -18,7 +18,8 @@
     <ServerHandlers>
       <!-- Use existing world -->
       <!-- replace path with your own save -->
-      <FileWorldGenerator src="C:\Users\vupha\Malmo\Minecraft\run\saves\Ice Boat Course"/>
+      <!-- <FileWorldGenerator src="C:\Users\vupha\Malmo\Minecraft\run\saves\Ice Boat Course"/> -->
+      <FileWorldGenerator src="/home/varun/Downloads/Malmo-0.37.0-Linux-Ubuntu-18.04-64bit_withBoost_Python3.6/Minecraft/run/saves/course"/>
       
       
       <ServerQuitFromTimeUp description="server_out_of_time" timeLimitMs="400000"/>

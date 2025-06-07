@@ -386,9 +386,19 @@ def main():
                        help='Load checkpoint: "latest", "best", or path to specific checkpoint file')
     parser.add_argument('--no-checkpoint', action='store_true', 
                        help='Start training from scratch, ignoring any existing checkpoints')
+    parser.add_argument('--model-name', type=str, default='default',
+                       help='Name of the model to train (creates separate directories for checkpoints and metrics)')
     
     # Parse known args to handle Malmo arguments
     args, unknown = parser.parse_known_args()
+    
+    print(f"Training model: {args.model_name}")
+    
+    # Create model-specific directories
+    model_dir = os.path.join('models', args.model_name)
+    metrics_dir = os.path.join('metrics', args.model_name)
+    os.makedirs(model_dir, exist_ok=True)
+    os.makedirs(metrics_dir, exist_ok=True)
     
     print("Initializing agent...")
     agent = Agent(
@@ -400,7 +410,9 @@ def main():
         epsilon_decay=0.995,   # Slower decay
         epsilon_min=0.1,       # Higher minimum epsilon to maintain some exploration
         batch_size=16,         # Reduced from 32 to 16 to save memory
-        mem_size=2000          # Reduced from 5000 to 2000 to save memory
+        mem_size=2000,         # Reduced from 5000 to 2000 to save memory
+        model_dir=model_dir,   # Pass model-specific directory
+        metrics_dir=metrics_dir  # Pass metrics-specific directory
     )
     
     # Initialize checkpoint tracking

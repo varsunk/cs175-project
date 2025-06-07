@@ -4,11 +4,13 @@ This project implements a reinforcement learning agent that learns to navigate a
 
 ## Project Structure
 
-- `train.py`: Main training script that implements the reinforcement learning loop. It handles:
+- `run.py`: Main training script that implements the reinforcement learning loop. It handles:
   - Mission initialization and execution
   - State processing and reward calculation
   - Agent training and model saving
   - Episode management
+  - Multiple model training support
+  - Checkpoint management
 
 - `agent.py`: Contains the Agent class that implements the DQN (Deep Q-Network) algorithm. It handles:
   - Neural network architecture
@@ -59,8 +61,38 @@ The agent receives the following rewards:
 To start training the agent:
 
 ```bash
-python train.py
+python run.py
 ```
+
+### Training Multiple Models
+
+The script supports training multiple models with different names. Each model will have its own separate directories for checkpoints and metrics.
+
+To train a new model with a specific name:
+```bash
+python run.py --model-name my_new_model
+```
+
+To train another model with a different name:
+```bash
+python run.py --model-name another_model
+```
+
+To load a specific model's checkpoint:
+```bash
+python run.py --model-name my_new_model --load-checkpoint latest
+```
+
+To start training from scratch with a new model name:
+```bash
+python run.py --model-name fresh_model --no-checkpoint
+```
+
+### Command Line Arguments
+
+- `--model-name`: Name of the model to train (creates separate directories for checkpoints and metrics)
+- `--load-checkpoint`: Load checkpoint: "latest", "best", or path to specific checkpoint file
+- `--no-checkpoint`: Start training from scratch, ignoring any existing checkpoints
 
 The training script will:
 1. Initialize the DQN agent
@@ -72,22 +104,32 @@ The training script will:
    - Current reward
    - Total reward
    - Epsilon value (exploration rate)
+   - Completion times and rankings
 
 ## Model Checkpoints
 
-Trained models and metrics are saved in:
-- `models/`: Contains saved model checkpoints
-- `metrics/`: Contains training metrics in JSON format
+Trained models and metrics are saved in model-specific directories:
+- `models/<model_name>/`: Contains saved model checkpoints for each model
+- `metrics/<model_name>/`: Contains training metrics in JSON format for each model
+
+Each model directory contains:
+- `latest_checkpoint.pth`: Most recent model checkpoint
+- `best_checkpoint.pth`: Best performing model checkpoint
+- `latest_metrics.json`: Most recent training metrics
+- `best_metrics.json`: Best performing model metrics
+- `completion_times.txt`: Record of completion times and rankings
 
 ## Customization
 
-You can modify various parameters in `train.py`:
+You can modify various parameters in `run.py`:
 - `EPISODES`: Number of training episodes
 - `MAX_STEPS_PER_EPISODE`: Maximum steps per episode
 - `SAVE_INTERVAL`: How often to save the model
 - `TARGET_UPDATE`: How often to update the target network
+- `CHECKPOINT_INTERVAL`: How often to save checkpoints
+- `BEST_MODEL_THRESHOLD`: Minimum episodes before considering saving best model
 
-The reward structure can be modified in the `REWARDS` dictionary in `train.py`.
+The reward structure can be modified in the `REWARDS` dictionary in `run.py`.
 
 ## Notes
 
@@ -97,4 +139,9 @@ The reward structure can be modified in the `REWARDS` dictionary in `train.py`.
 - The episode ends when either:
   - The agent collects the emerald
   - The agent dies
-  - The maximum number of steps is reached 
+  - The maximum number of steps is reached
+- Each model maintains its own:
+  - Training history
+  - Best completion times
+  - Checkpoints
+  - Metrics 
