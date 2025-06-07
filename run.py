@@ -35,11 +35,12 @@ TARGET_UPDATE = 10
 CHECKPOINT_INTERVAL = 50  # Save latest checkpoint every 50 episodes
 BEST_MODEL_THRESHOLD = 10  # Only consider saving best model after this many episodes
 
-# Define actions (only turning to navigate the race track)
+# Define actions (turning and jumping to navigate the race track)
 ACTIONS = [
     "turn_right",      # Turn right
     "turn_left",       # Turn left
     "no_turn",         # Continue straight (no turning)
+    "jump",            # Jump while running (useful on ice blocks)
 ]
 
 # Action mapping to continuous movement commands
@@ -47,6 +48,7 @@ ACTION_COMMANDS = {
     "turn_right": ("turn", 0.5),
     "turn_left": ("turn", -0.5),
     "no_turn": ("turn", 0),
+    "jump": ("jump", 1),
 }
 
 # Reward constants
@@ -149,6 +151,8 @@ def get_action_reward(action):
     action_name = ACTIONS[action]
     if action_name == "no_turn":  # Going straight - encourage this
         return REWARDS["movement_bonus"]
+    elif action_name == "jump":  # Jumping - bonus for speed on ice blocks
+        return REWARDS["movement_bonus"] * 2  # Double bonus for jumping
     elif action_name in ["turn_right", "turn_left"]:  # Turning - small penalty to discourage unnecessary turns
         return -5
     else:
